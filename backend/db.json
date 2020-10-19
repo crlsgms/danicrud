@@ -9,6 +9,31 @@
       "id": 2,
       "name": "Maria Julia da Silva",
       "email": "mjds@empresa.com"
+    },
+    {
+      "name": "Stevie Wonder",
+      "email": "swonder@emi.com",
+      "id": 3
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "description": "sabonete",
+      "price": 34,
+      "qty": 3
+    },
+    {
+      "id": 1,
+      "description": "mascara",
+      "price": 3,
+      "qty": 30
+    },
+    {
+      "id": 1,
+      "description": "alcool em gel",
+      "price": 12,
+      "qty": 10
     }
   ]
 }

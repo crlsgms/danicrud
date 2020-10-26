@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Main from '../template/Main'
 
 const headerProps = {
@@ -10,13 +10,13 @@ const headerProps = {
 
 const baseUrl = 'http://localhost:3001/products'
 const initialState = {
-    user: { description: '', price: '', qty: '' },
+    product: { description: '', price: '', qty: '' },
     list: []
 }
 
-export default class ProductCrud extends Component{
- 
-    state = { ...initialState}
+export default class ProductCrud extends Component {
+
+    state = { ...initialState }
 
     componentWillMount() {
         // consome a API com GET (por padrao)
@@ -27,7 +27,60 @@ export default class ProductCrud extends Component{
         })
     }
 
-    renderForm(){
+    updateField(e) {
+        //recupera o valor atual do produto 
+        const product = { ...this.state.product }
+        // alterao valor com o input do usuario
+        product[e.target.name] = e.target.value
+        //altera com o spread os dados inseridos
+        this.setState({ product })
+    }
+
+    salvar() {
+        //recupera o valor atual do produto
+        const product = this.state.product
+        // descobrir se tem o produto,ou sera um novo (id existente ou não)
+        const metodo = product.id ? 'put' : 'post'
+        const url = product.id ? `${baseUrl}/${product.id}` : `${baseUrl}`
+        // chamada da API
+        Axios[metodo](url, product)
+            .then(resposta => {
+                // recupera a lista atualizada
+                const list = this.getUpdatedList(resposta.data)
+                // atualiza efetivamente a lista
+                this.setState({ product: initialState.product, list })
+            })
+    }
+
+    getUpdatedList(product, add = true) {
+        //recupera lista de produtos sem o novo produto
+        const list = this.state.list.filter(p => p.id !== product.id)
+        if (add) {
+            list.unshift(product) // ordena para o mais recente
+        }
+        return list
+    }
+
+    renderForm() {
+        return (
+            <form>
+                <div className="form-group">
+                    <label> Descrição </label>
+                    <input onChange={e => this.updateField(e)} name="description" type="text" className="form-control" value={this.state.product.description} />
+                </div>
+                <div className="form-group">
+                    <label> Preço </label>
+                    <input onChange={e => this.updateField(e)} name="price" type="number" className="form-control" value={this.state.product.price} />
+                </div>
+                <div className="form-group">
+                    <label> Quantidade </label>
+                    <input onChange={e => this.updateField(e)} name="qty" type="number" className="form-control" value={this.state.product.qty} />
+                </div>
+                <div className="form-group">
+                    <button onClick={e => this.salvar()} type="button" className="btn btn-primary"> Cadastra </button>
+                </div>
+            </form>
+        )
 
     }
 
@@ -72,13 +125,13 @@ export default class ProductCrud extends Component{
         })
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <Main {...headerProps}>
                 {this.renderForm()}
                 {this.renderTable()}
             </Main>
         )
     }
-    
+
 }

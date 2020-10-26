@@ -24,16 +24,22 @@
       "qty": 3
     },
     {
-      "id": 1,
+      "id": 2,
       "description": "mascara",
       "price": 3,
       "qty": 30
     },
     {
-      "id": 1,
+      "id": 3,
       "description": "alcool em gel",
       "price": 12,
       "qty": 10
+    },
+    {
+      "description": "café",
+      "price": "12",
+      "qty": "3",
+      "id": 4
     }
   ]
 }

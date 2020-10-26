@@ -30,14 +30,8 @@
       "qty": 30
     },
     {
-      "id": 3,
-      "description": "alcool em gel",
-      "price": 12,
-      "qty": 10
-    },
-    {
       "description": "café",
-      "price": "12",
+      "price": "20",
       "qty": "3",
       "id": 4
     }

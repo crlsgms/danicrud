@@ -77,7 +77,7 @@ export default class ProductCrud extends Component {
                     <input onChange={e => this.updateField(e)} name="qty" type="number" className="form-control" value={this.state.product.qty} />
                 </div>
                 <div className="form-group">
-                    <button onClick={e => this.salvar()} type="button" className="btn btn-primary"> Cadastra </button>
+                    <button onClick={e => this.salvar()} type="button" className="btn btn-primary"> Cadastrar </button>
                 </div>
             </form>
         )
@@ -93,6 +93,7 @@ export default class ProductCrud extends Component {
                         <th>Descrição</th>
                         <th>Preço</th>
                         <th>Quantidade</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -102,7 +103,22 @@ export default class ProductCrud extends Component {
         )
     }
 
+    atualiza(product) {
+        this.setState({ product })
+    }
+
+    remove(product) {
+        Axios.delete(`${baseUrl}/${product.id}`)
+            .then(resp => {
+                //recupera a lista atualizada, sem o produto que foi removido
+                const list = this.getUpdatedList(product, false)
+                this.setState({ list })
+            }
+            )
+    }
+
     renderRows() {
+        // a função map faz um for no vetor list, para cada product
         return this.state.list.map(product => {
             return (
                 <tr key={product.id}>
@@ -111,14 +127,8 @@ export default class ProductCrud extends Component {
                     <td>{product.price}</td>
                     <td>{product.qty}</td>
                     <td>
-                        <button className="btn btn-warning"
-                            onClick={() => this.load(product)}>
-                            <i className="fa fa-pencil"></i>
-                        </button>
-                        <button className="btn btn-danger ml-2"
-                            onClick={() => this.remove(product)}>
-                            <i className="fa fa-trash"></i>
-                        </button>
+                        <button className="btn btn-warning" onClick={e => this.atualiza(product)}> <i className="fa fa-pencil"></i></button>
+                        <button className="btn btn-danger ml-2" onClick={e => this.remove(product)}> <i className="fa fa-trash"></i></button>
                     </td>
                 </tr>
             )
